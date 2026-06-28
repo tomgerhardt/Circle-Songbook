@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+:root {
+  --font-roboto-mono: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-verse: #3b82f6;
+  --color-chorus: #ef4444;
+  --color-pre-chorus: #f59e0b;
+  --color-bridge: #8b5cf6;
+  --color-solo: #10b981;
+  --color-part: #6b7280;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: #fff;
+  color: #111;
+}
+
+/* ChordPro rendered output */
+.chord-sheet {
+  line-height: 1.7;
+}
+
+.chord-sheet .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 0;
+}
+
+/* Each chord+lyric column.
+   padding-right ensures chords don't run together when lyrics are short/empty */
+.chord-sheet .column {
+  display: inline-flex;
+  flex-direction: column;
+  padding-right: 0.35em;
+}
+
+.chord-sheet .chord {
+  color: #1d4ed8;
+  font-weight: 700;
+  font-size: 0.8em;
+  line-height: 1.4;
+  white-space: pre;
+  /* At minimum as wide as a typical short chord so single-chord lines have breathing room */
+  min-width: 2ch;
+}
+
+.chord-sheet .lyrics {
+  white-space: pre;
+}
+
+/* When a lyric cell is effectively blank, give it a zero-width space so the
+   column still renders at the chord's intrinsic width */
+.chord-sheet .lyrics:empty::before {
+  content: '\200B';
+}
+
+.hide-chords .chord {
+  display: none;
+}
+
+/* Section styling — color bar only, no fill */
+.section-verse {
+  border-left: 3px solid var(--color-verse);
+  padding-left: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.section-chorus {
+  border-left: 3px solid var(--color-chorus);
+  padding-left: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.section-pre-chorus {
+  border-left: 3px solid var(--color-pre-chorus);
+  padding-left: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.section-bridge {
+  border-left: 3px solid var(--color-bridge);
+  padding-left: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.section-solo {
+  border-left: 3px solid var(--color-solo);
+  padding-left: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.section-part {
+  border-left: 3px solid var(--color-part);
+  padding-left: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.section-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.25rem;
+  opacity: 0.45;
+}
+
+/* Presenter mode */
+.presenter-mode {
+  background: #0f0f0f !important;
+  color: #f0f0f0 !important;
+  min-height: 100vh;
+}
+
+.presenter-mode .chord {
+  color: #60a5fa !important;
+}
+
+.presenter-mode .section-verse  { border-color: #60a5fa; }
+.presenter-mode .section-chorus { border-color: #f87171; }
+.presenter-mode .section-pre-chorus { border-color: #fbbf24; }
+.presenter-mode .section-bridge { border-color: #a78bfa; }
+.presenter-mode .section-solo   { border-color: #34d399; }
+.presenter-mode .section-part   { border-color: #9ca3af; }
+
+/* Print / PDF styles — hide interactive chrome */
+@media print {
+  header, footer, .tap-zone, button { display: none !important; }
+  .chord-sheet { font-size: 11pt; }
+}

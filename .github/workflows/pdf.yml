@@ -1,0 +1,56 @@
+name: Generate PDFs
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build-pdfs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Puppeteer system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgbm-dev \
+            libnss3 \
+            libatk1.0-0 \
+            libatk-bridge2.0-0 \
+            libcups2 \
+            libdrm2 \
+            libxkbcommon0 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxfixes3 \
+            libxrandr2 \
+            libglib2.0-0 \
+            libasound2
+
+      - name: Install Puppeteer + pdf-lib
+        run: npm install puppeteer pdf-lib
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Generate PDFs
+        run: node scripts/generate-pdfs.mjs
+
+      - name: Commit PDFs
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: regenerate PDFs [skip ci]'
+          file_pattern: public/pdfs/*.pdf
